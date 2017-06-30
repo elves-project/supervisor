@@ -1,0 +1,7 @@
+/target
+.settings
+.classpath
+.project
+.idea/
+*.iml
+elves-supervisor-web/src/main/resources/conf.properties

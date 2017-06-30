@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sitemesh>
+    <!-- 指明满足“/*”的页面，将被“/WEB-INF/views/sitemesh/basic.jsp”所装饰 -->
+    <mapping path="/*" decorator="/WEB-INF/view/sitemesh/basic_layout.jsp" />
+
+    <!-- 指明满足“/exclude.jsp*”的页面，将被排除，不被装饰 -->
+    <mapping path="/*.html" exclue="true" />
+    <mapping path="/*Web*" exclue="true" />
+    <mapping path="/*Json*" exclue="true" />
+    <mapping path="/WEB-INF/view/sitemesh/*" exclue="true" />
+</sitemesh>

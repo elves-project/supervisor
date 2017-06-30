@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.supervisor.dao.ManageDao">
+
+	<!-- 获取数据列表-->
+   <select id="getDataList" resultType="User"  parameterType="Map">
+		SELECT * FROM user 
+		<where>
+			<if test="email!=null and email!='' ">
+				AND email = #{email} 
+			</if>
+			<if test="username!=null and username!='' ">
+				AND user_name = #{username}
+			</if>
+			<if test="startNum!=null and startNum!='' and recordNum!=null and recordNum!=''">
+				LIMIT #{startNum},#{recordNum}
+			</if>
+		</where>
+	</select>
+	
+	    <!-- 获取记录数-->
+	<select id="getCountNum" resultType="Integer" parameterType="Map">
+	    select count(*) from user
+	    <where>
+			<if test="email!=null and email!='' ">
+				and email = #{email}
+			</if>
+			<if test="username!=null and username!='' ">
+				and user_name = #{username}
+			</if>
+		</where>
+	</select>
+	
+	<select id="valEmail" resultType="User" parameterType="String">
+	    select * from user where email=#{email}
+	</select>
+	
+	<select id="updateValEmail" resultType="User">
+	    select * from user where email=#{email} and id !=#{id}
+	</select>
+	
+	
+	<insert id="AddUser" parameterType="User">
+		 INSERT INTO user(email,PASSWORD,user_name,founder,create_time,update_time)VALUES(#{email},#{password},#{username},#{founder},now(),now())
+	</insert>
+	
+    <update id="updateUser" parameterType="User">
+	    UPDATE user SET user_name=#{username} ,email=#{email},update_time=now() WHERE id = #{id} 
+	</update>
+	
+   <delete id="deleteUser" parameterType="String">
+	    DELETE FROM user WHERE id in (#{id})
+	</delete>
+	
+	<select id="getUsers" resultType="User" parameterType="String">
+	    select * from user where id=#{id}
+	</select>
+	
+	<select id="valUserCenter" resultType="User" parameterType="User">
+		SELECT * FROM user WHERE email=#{email} and password=#{password}
+	</select>
+	
+	<update id="updatePassWord" parameterType="User">
+	    UPDATE user SET password= #{password}  WHERE user_name = #{username} 
+	</update>
+	
+	<update id="reCordUserLogin" parameterType="User">
+	    UPDATE user SET last_login_ip=#{lastLoginIp},login_times= #{loginTimes},last_login_time=now()  WHERE email = #{email} 
+	</update>
+	
+</mapper>

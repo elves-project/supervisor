@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.supervisor.dao.AppDao">
+	
+	<select id="getAllApp" resultType="App">
+		SELECT app.*,agent.agent_count FROM (SELECT a.*,v.`version` FROM app a
+		LEFT JOIN app_version v 
+		ON a.`version_id`=v.`id`) app 
+		LEFT JOIN 
+		(SELECT COUNT(1) AS agent_count,app_id FROM `app_agent` GROUP BY app_id) agent
+		ON app.`app_id` =agent.app_id
+	</select>
+	
+	<select id="query" resultType="App" parameterType="String">
+		SELECT a.*,v.`version` FROM app a
+		LEFT JOIN app_version v 
+		ON a.`version_id`=v.`id`
+		WHERE a.`instruct`=#{instruct}
+	</select>
+	
+	<select id="valInstruct" resultType="App" parameterType="String">
+		SELECT * FROM app where instruct = #{valInstruct} order by create_time asc
+	</select>
+	
+    <insert id="addApp" parameterType="String">
+		 INSERT INTO app(instruct,app_name,founder,create_time,processor_ip,processor_port)VALUES(#{centerid},#{appname},#{founder},now(),#{processorIp},#{processorPort})
+	</insert>
+	
+	<delete id="deleteApp" parameterType="String">
+	    DELETE FROM app WHERE app_id in (#{id})
+	</delete>
+	
+	<select id="getVsersionList" resultType="AppVersion" parameterType="int">
+		SELECT * FROM app_version WHERE app_id=#{appId}
+	</select>
+	
+    <select id="getAppById" resultType="App" parameterType="Integer">
+	    SELECT * FROM app where app_id=#{id}
+	</select>
+	
+	 <insert id="insertAppVersion" parameterType="AppVersion">
+		 INSERT INTO app_version(version,operator,app_id,create_time)VALUES(#{version},#{operator},#{appId},now())
+	</insert>
+	
+	<update id="updateAppVersion" parameterType="AppVersion">
+	    UPDATE app_version SET create_time=now(),version=#{version},operator=#{operator} WHERE id = #{id} 
+	</update>
+	
+    <select id="getAppVersionById" resultType="AppVersion" parameterType="AppVersion">
+	    SELECT * FROM app_version where version=#{version} and app_id=#{appId}
+	</select>
+	
+	<update id="startAppVersion">
+	    UPDATE app SET version_id=#{versionId}  WHERE app_id = #{appid} 
+	</update>
+</mapper>

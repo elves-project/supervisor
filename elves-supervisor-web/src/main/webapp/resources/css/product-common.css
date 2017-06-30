@@ -1,0 +1,54 @@
+/*IncidentController-addIncident*/
+.self-top{
+    height: 60px;
+    border-bottom: 1px solid #ccc;
+    padding-top: 20px;
+    font-size: 24px ;
+}
+.self-head .list{
+    position: absolute;
+    width: 300px;
+    padding: 0 -5px;
+    z-index: 15;
+    border:1px solid #DEDEDE;
+    background: #fff;
+}
+.self-head .active th{
+    text-align: left;
+}
+.self-head .list .pull-left{
+    width: 318px;
+    text-align: left;
+}
+.self-head .list>.checkbox{
+    margin-bottom: 0;
+}
+.self-head .list .checkbox{
+    float: left;
+    padding: 10px 15px 5px;
+    /*margin:0 5px 10px;*/
+    width: 100px;
+    overflow: hidden;
+}
+.self-dist {
+    margin-top: 20px;
+}
+.self-dist .active th{
+    text-align: left;
+}
+.form-control[readonly].date{
+    background: #fff;
+}
+#all_fault{
+    text-align: left;
+    color:#333333;
+    font-weight:bold;
+}
+#all_fault tr:last-child{
+    font-weight:100;
+}
+
+#all_fault input{
+    border:none;
+    background:none;
+}

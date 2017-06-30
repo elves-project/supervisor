@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.supervisor.dao.SupervisorDao">
+	
+	<select id="query" resultType="AppAgent">
+		SELECT a.*,b.`app_name` FROM `app_agent` a LEFT JOIN app b ON a.`app_id`=b.`app_id` WHERE 1 =1
+		<if test="appId != 0">
+		  AND a.`app_id`=#{appId}
+		</if>
+		<if test="ip != null and ip !=''">
+		  AND a.`ip`=#{ip}
+		</if>
+		<if test="assetId != null and assetId !=''">
+		  AND a.`asset_id`=#{assetId}
+		</if>
+	</select>
+	
+	<select id="queryAppAgentIp" resultType="String">
+		SELECT a.ip FROM `app_agent` a LEFT JOIN app b ON a.`app_id`=b.`app_id` WHERE a.`app_id`=#{appId}
+	</select>
+	
+	<insert id="addAppAgent" parameterType="AppAgent">
+		INSERT INTO `app_agent`(app_id,ip,asset_id) VALUES (#{appId},#{ip},#{assetId})
+	</insert>
+	
+	<delete id="delAppAgent" parameterType="int">
+		DELETE FROM `app_agent` WHERE `id` =#{id}
+	</delete>
+		
+</mapper>

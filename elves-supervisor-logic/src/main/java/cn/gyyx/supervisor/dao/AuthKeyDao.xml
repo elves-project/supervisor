@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gyyx.supervisor.dao.AuthKeyDao">
+	
+	<select id="getAllAuthKey" resultType="AuthKey">
+		SELECT auth.*,a.app_name,a.`instruct` FROM `auth_key` auth 
+		LEFT JOIN app a 
+		ON auth.app_id=a.app_id
+		ORDER BY auth.create_time
+	</select>
+	<select id="query" resultType="AuthKey" parameterType="String">
+		SELECT auth.*,a.app_name,a.`instruct` FROM `auth_key` auth 
+		LEFT JOIN app a 
+		ON auth.app_id=a.app_id 
+		WHERE auth.auth_id=#{authId} 
+	</select>
+	<select id="queryAppByAuthId" resultType="App" parameterType="String">
+		SELECT a.*,v.`version` FROM `auth_key` auth 
+		LEFT JOIN app a 
+		ON auth.app_id=a.app_id 
+		LEFT JOIN app_version v
+		ON a.`version_id`=v.`id`
+		WHERE auth.auth_id=#{authId} 
+	</select>
+	
+	<select id="queryByAppId" resultType="AuthKey" parameterType="int">
+		SELECT * FROM `auth_key` WHERE app_id=#{appId}
+	</select>
+	
+	<insert id="add" parameterType="AuthKey">
+		INSERT INTO auth_key VALUES(#{authId},#{authKey},#{authName},#{createTime},#{appId})
+	</insert>
+	
+	<delete id="del" parameterType="String">
+		DELETE FROM auth_key WHERE auth_id=#{authId}
+	</delete>
+		
+</mapper>
