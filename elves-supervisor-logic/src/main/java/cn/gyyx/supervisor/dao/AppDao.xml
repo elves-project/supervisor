@@ -23,7 +23,7 @@
 	</select>
 	
     <insert id="addApp" parameterType="String">
-		 INSERT INTO app(instruct,app_name,founder,create_time,processor_ip,processor_port)VALUES(#{centerid},#{appname},#{founder},now(),#{processorIp},#{processorPort})
+		 INSERT INTO app(instruct,app_name,founder,create_time)VALUES(#{centerid},#{appname},#{founder},now())
 	</insert>
 	
 	<delete id="deleteApp" parameterType="String">
