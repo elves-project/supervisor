@@ -65,23 +65,13 @@ public class AppController {
 	}
 
 	@RequestMapping(value = "/add")
-	public void addApp(HttpServletRequest request, HttpServletResponse response, String centerid, String appname,String processorIp,String processorPort)
+	public void addApp(HttpServletRequest request, HttpServletResponse response, String centerid, String appname)
 			throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		User login = (User) request.getSession().getAttribute("curUser");
 		map.put("centerid", centerid);
 		map.put("appname", appname);
 		map.put("founder", login.getUsername());
-		if(processorIp!=null && !processorIp.equals("")){
-			map.put("processorIp", processorIp);
-		}else{
-			map.put("processorIp", "");
-		}
-		if(processorPort!=null && !processorPort.equals("")){
-			map.put("processorPort", processorPort);	
-		}else{
-			map.put("processorPort", "0");
-		}
 		appService.addApp(map);
 		response.getWriter().print("suc");
 	}
