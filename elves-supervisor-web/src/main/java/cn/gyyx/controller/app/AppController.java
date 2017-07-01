@@ -73,6 +73,7 @@ public class AppController {
 		map.put("appname", appname);
 		map.put("founder", login.getUsername());
 		appService.addApp(map);
+
 		response.getWriter().print("suc");
 	}
 
