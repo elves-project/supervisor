@@ -25,7 +25,7 @@
 
 	</dependencies>
 	<build>
-		<finalName>elves-supervisor</finalName>
+		<finalName>elves-supervisor-${version}-release</finalName>
 		<directory>../target</directory>
 		<plugins>
 			<plugin>
