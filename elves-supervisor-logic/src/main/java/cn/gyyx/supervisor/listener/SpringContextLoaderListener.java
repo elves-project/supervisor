@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import cn.gyyx.elves.util.ExceptionUtil;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -27,14 +28,33 @@ public class SpringContextLoaderListener implements ServletContextListener {
 		ApplicationContext ctx = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
 		SpringUtil.app=ctx;
 		LOG.info("WebApplicationContext listener start ,ctx :" + ctx);
-		
-		ZookeeperExcutor zke=new ZookeeperExcutor(PropertyLoader.ZOOKEEPER_HOST,
-				PropertyLoader.ZOOKEEPER_OUT_TIME, PropertyLoader.ZOOKEEPER_OUT_TIME);
-		String nodeName=zke.createNode(PropertyLoader.ZOOKEEPER_ROOT+"/Supervisor/", "");
-		if(null!=nodeName){
-			zke.addListener(PropertyLoader.ZOOKEEPER_ROOT+"/Supervisor/", "");
-			LOG.info("register zookeeper Supervisor node success");
+
+
+		if("true".equalsIgnoreCase(PropertyLoader.ZOOKEEPER_ENABLED)){
+			try {
+				ZookeeperExcutor zke=new ZookeeperExcutor(PropertyLoader.ZOOKEEPER_HOST,
+						PropertyLoader.ZOOKEEPER_OUT_TIME, PropertyLoader.ZOOKEEPER_OUT_TIME);
+
+				//创建模块根节点
+				if(null==zke.getClient().checkExists().forPath(PropertyLoader.ZOOKEEPER_ROOT)){
+					zke.getClient().create().creatingParentsIfNeeded().forPath(PropertyLoader.ZOOKEEPER_ROOT);
+				}
+				if(null==zke.getClient().checkExists().forPath(PropertyLoader.ZOOKEEPER_ROOT+"/supervisor")){
+					zke.getClient().create().creatingParentsIfNeeded().forPath(PropertyLoader.ZOOKEEPER_ROOT+"/supervisor");
+				}
+
+				String nodeName=zke.createNode(PropertyLoader.ZOOKEEPER_ROOT+"/supervisor/", "");
+				if(null!=nodeName){
+					zke.addListener(PropertyLoader.ZOOKEEPER_ROOT+"/supervisor/", "");
+					LOG.info("register zookeeper supervisor node success");
+				}
+			}catch (Exception e){
+				LOG.error("register zookeeper supervisor node fail , msg:"+ ExceptionUtil.getStackTraceAsString(e));
+			}
+
 		}
+
+
 	}
 	
 	public void contextDestroyed(ServletContextEvent event) {
