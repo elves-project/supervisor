@@ -4,7 +4,7 @@
 
 	<groupId>cn.gyyx.elves</groupId>
 	<artifactId>elves-supervisor</artifactId>
-	<version>0.3.1</version>
+	<version>0.3.2</version>
 	<packaging>pom</packaging>
 
 	<name>elves-supervisor</name>

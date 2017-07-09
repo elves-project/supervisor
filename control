@@ -1,0 +1,39 @@
+#!/bin/bash
+
+WORKSPACE=$(cd $(dirname $0)/; pwd)
+cd $WORKSPACE
+
+module=supervisor
+app=elves-$module
+
+function build() {
+    mvn clean
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
+    mvn package
+    if [ $? -ne 0 ]; then
+        exit $?
+    fi
+}
+
+function pack() {
+    build
+    FILENAME=$(ls -l target | grep war | awk '{print $NF}')
+    version=$(ls -l target | grep war | awk '{print $NF}' | awk -F '-' '{print $3}')
+    tar zcvf $app-$version.tar.gz database.sql -C target/ $FILENAME
+}
+
+function help() {
+    echo "$0 build|pack"
+}
+
+if [ "$1" == "" ]; then
+    help
+elif [ "$1" == "build" ];then
+    build
+elif [ "$1" == "pack" ];then
+    pack
+else
+    help
+fi
