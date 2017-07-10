@@ -19,9 +19,9 @@ function build() {
 
 function pack() {
     build
-    FILENAME=$(ls -l target | grep war | awk '{print $NF}')
-    version=$(ls -l target | grep war | awk '{print $NF}' | awk -F '-' '{print $3}')
-    tar zcvf $app-$version.tar.gz database.sql -C target/ $FILENAME
+    FILENAME=$(ls -l elves-supervisor-web/target | grep war | awk '{print $NF}')
+    version=$(ls -l elves-supervisor-web/target | grep war | awk '{print $NF}' | awk -F '-' '{print $3}')
+    tar zcvf $app-$version.tar.gz database.sql -C elves-supervisor-web/target/ $FILENAME
 }
 
 function help() {
