@@ -1,5 +1,5 @@
 #zookeeper config
-zookeeper.enabled  = true
+zookeeper.enabled=false
 zookeeper.host=127.0.0.1:2181
 zookeeper.outTime=10000
 zookeeper.root = /elves
