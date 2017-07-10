@@ -26,7 +26,7 @@
 	</dependencies>
 	<build>
 		<finalName>elves-supervisor-${version}-release</finalName>
-		<directory>../target</directory>
+		<!--<directory>../target</directory>-->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
