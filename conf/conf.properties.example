@@ -1,3 +1,6 @@
+#api server config
+server.port=9092
+
 #zookeeper config
 zookeeper.enabled=false
 zookeeper.host=127.0.0.1:2181

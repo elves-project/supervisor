@@ -33,8 +33,7 @@ public class ProgramEntrance {
         int serverPort = Integer.parseInt(properties.getProperty("server.port"));
         Server server = new Server(serverPort);
         WebAppContext context = new WebAppContext();
-//        context.setContextPath("/supervisor");
-        context.setWar(path+"/src/supervisor-web/target/ROOT.war");
+        context.setWar(path+"/bin/ROOT.war");
         server.setHandler(context);
         server.start();
         server.join();
