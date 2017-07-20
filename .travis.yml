@@ -2,3 +2,5 @@ language: java
 jdk:
   - oraclejdk7
   - openjdk7
+script:
+  - chmod +x ./control && ./control pack
