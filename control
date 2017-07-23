@@ -81,7 +81,7 @@ function pack() {
     build
     FILENAME=$(ls -l bin | grep release | awk '{print $NF}')
     version=$(ls -l bin | grep release | awk '{print $NF}' | awk -F '-' '{print $3}')
-    tar zcvf $app-linux-$version.tar.gz conf/ bin/$FILENAME bin/ROOT.war control --exclude conf/conf.properties
+    tar zcvf $app-linux-$version.tar.gz conf/ bin/$FILENAME bin/ROOT.war control database.sql --exclude conf/conf.properties
 }
 
 function version() {
