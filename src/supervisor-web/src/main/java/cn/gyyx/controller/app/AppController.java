@@ -242,4 +242,12 @@ public class AppController {
 		boolean flag=appService.unBindAgent(ids);
 		return flag?"success":"fail";
 	}
+	@RequestMapping(value="flushData")
+	@ResponseBody
+	public String flushData(){
+		boolean flag=appService.flushData();
+		return flag?"success":"fail";
+	}
+
+
 }

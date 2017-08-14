@@ -24,6 +24,9 @@
 				<button class="btn btn-danger" onclick="deleteApp();">
 					<span class="glyphicon glyphicon-trash"></span>
 				</button>
+				<button class="btn btn-info" onclick="reBindData();">
+					手动刷新数据
+				</button>
 			</div>
 		</div>
 		<table class="table table-striped table-bordered" style="border:0px" id="apptableinfo" width="100%">
@@ -916,6 +919,23 @@
     		}
     	 });
     }
+
+	function reBindData(){
+        $.ajax({
+            url:"<%=basePath%>app/flushData",
+            type:'POST',
+            success:function(data){
+                if(data=="success"){
+                    alert("操作成功,请稍后刷新页面！");
+                }else{
+                    alert("操作失败！");
+                }
+            },
+            error:function(){
+                alert("操作失败！");
+            }
+        });
+	}
 </script>
 
 </body>

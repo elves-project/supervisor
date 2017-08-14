@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.gyyx.supervisor.timer.UpdateBindDataTimer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class AppServiceImpl implements AppService{
 	
 	@Autowired
 	private MessageProducer messageProducer;
+
+	@Autowired
+	private UpdateBindDataTimer timer;
 	
 	@Override
 	public List<App> getAllApp() {
@@ -211,6 +215,12 @@ public class AppServiceImpl implements AppService{
 			supervisorDao.delAppAgent(Integer.parseInt(id));
 		}
 		noticeHeartbeat();
+		return true;
+	}
+
+	@Override
+	public boolean flushData(){
+		timer.update();
 		return true;
 	}
 

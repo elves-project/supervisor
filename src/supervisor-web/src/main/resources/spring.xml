@@ -68,7 +68,15 @@
 		<!-- 配置监控统计拦截的filters -->
 	    <property name="filters" value="stat" /> 
 	</bean>
-	
+
+	<!--spring 定时任务 -->
+	<task:annotation-driven/>
+
+	<task:scheduled-tasks>
+		<task:scheduled ref="updateBindDataTimer" method="update" cron="0 0/10 * * * ?"/>
+	</task:scheduled-tasks>
+
+
 	<import resource="classpath*:/rabbitmq.xml" />
 	
 </beans>

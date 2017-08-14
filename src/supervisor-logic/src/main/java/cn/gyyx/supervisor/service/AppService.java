@@ -37,5 +37,7 @@ public interface AppService {
 	public boolean bindAgent(Integer appId, String appAgentList);
 	
 	public boolean unBindAgent(String ids);
-	
+
+	public boolean flushData();
+
 }

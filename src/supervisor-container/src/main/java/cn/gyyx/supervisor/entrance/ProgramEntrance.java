@@ -40,6 +40,7 @@ public class ProgramEntrance {
     }
 
     public static void main(String[] args) {
+        args=new String[]{"F:\\GitHub\\eastFu\\supervisor"};
         try {
             addSystemProperties(args[0]);
             startJettyServer(args[0]);
