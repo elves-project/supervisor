@@ -73,9 +73,8 @@
 	<task:annotation-driven/>
 
 	<task:scheduled-tasks>
-		<task:scheduled ref="updateBindDataTimer" method="update" cron="0 0/10 * * * ?"/>
+		<task:scheduled ref="updateBindDataTimer" method="update" cron="0 0 0/2 * * ?"/>
 	</task:scheduled-tasks>
-
 
 	<import resource="classpath*:/rabbitmq.xml" />
 	

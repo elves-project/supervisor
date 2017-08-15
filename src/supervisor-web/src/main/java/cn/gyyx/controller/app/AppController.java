@@ -1,15 +1,13 @@
 package cn.gyyx.controller.app;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import cn.gyyx.elves.util.mq.PropertyLoader;
+import cn.gyyx.supervisor.model.App;
+import cn.gyyx.supervisor.model.AppAgent;
+import cn.gyyx.supervisor.model.AppVersion;
+import cn.gyyx.supervisor.model.User;
+import cn.gyyx.supervisor.service.AppService;
+import cn.gyyx.supervisor.timer.UpdateBindDataTimer;
+import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -21,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import cn.gyyx.elves.util.mq.PropertyLoader;
-import cn.gyyx.supervisor.model.App;
-import cn.gyyx.supervisor.model.AppAgent;
-import cn.gyyx.supervisor.model.AppVersion;
-import cn.gyyx.supervisor.model.User;
-import cn.gyyx.supervisor.service.AppService;
-
-import com.alibaba.fastjson.JSON;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/app")
@@ -36,7 +34,10 @@ public class AppController {
 
 	@Autowired
 	private AppService appService;
-	
+
+	@Autowired
+	private UpdateBindDataTimer timer;
+
 	@RequestMapping(value = "/page")
 	public String getPage(HttpServletRequest request, HttpServletResponse response) {
 		return "app/appPage";
@@ -245,9 +246,7 @@ public class AppController {
 	@RequestMapping(value="flushData")
 	@ResponseBody
 	public String flushData(){
-		boolean flag=appService.flushData();
-		return flag?"success":"fail";
+        timer.update();
+		return "success";
 	}
-
-
 }

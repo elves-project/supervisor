@@ -53,4 +53,8 @@
 	<update id="startAppVersion">
 	    UPDATE app SET version_id=#{versionId}  WHERE app_id = #{appid} 
 	</update>
+
+    <delete id="removeAllAgent" parameterType="int">
+        DELETE FROM app_agent WHERE `app_id` =#{appId}
+    </delete>
 </mapper>

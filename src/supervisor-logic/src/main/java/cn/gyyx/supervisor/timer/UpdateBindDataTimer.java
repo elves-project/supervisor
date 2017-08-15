@@ -1,7 +1,9 @@
 package cn.gyyx.supervisor.timer;
 
-import cn.gyyx.supervisor.dao.AppDao;
+import cn.gyyx.elves.util.ExceptionUtil;
+import cn.gyyx.elves.util.HttpUtil;
 import cn.gyyx.supervisor.model.App;
+import cn.gyyx.supervisor.service.AppService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +22,32 @@ public class UpdateBindDataTimer {
     private static final Logger LOG = Logger.getLogger(UpdateBindDataTimer.class);
 
     @Autowired
-    private AppDao appDao;
+    private AppService appServiceImpl;
 
     public void update(){
-        new Thread(){
-            @Override
-            public void run(){
-                List<App> apps=appDao.getAllApp();
-                for(App app:apps){
-                    if(StringUtils.isNotBlank(app.getBindUrl())){
-                        //http 请求url  获取agent数据
-
-                        //清空 agent表
-
-                        //插入agent数据
-
+        List<App> apps=appServiceImpl.getAllApp();
+        boolean flag=false;
+        for(App app:apps){
+            if(StringUtils.isNotBlank(app.getBindUrl())){
+                try {
+                    String data = HttpUtil.sendGet(app.getBindUrl(),null);
+                    if(StringUtils.isNotBlank(data)){
+                        appServiceImpl.reBindAgent(app.getAppId(),null);
+                        if(!flag){
+                            flag=true;
+                        }
+                    }else{
+                        LOG.error("url return data is empty,app:"+app.getInstruct()+",url:"+app.getBindUrl());
                     }
+                }catch (Exception e){
+                    LOG.error("update app bind agent exception,app:"+app.getInstruct()+",url:"+app.getBindUrl()+",msg:"+ ExceptionUtil.getStackTraceAsString(e));
                 }
             }
-        }.start();
+        }
+        //如果重新绑定数据成功，则通知heartbeat
+        if(flag){
+            appServiceImpl.noticeHeartbeat();
+        }
     }
 
 }

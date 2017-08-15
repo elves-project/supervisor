@@ -1,12 +1,11 @@
 package cn.gyyx.supervisor.dao;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-
 import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.model.AppVersion;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface AppDao {
 
@@ -31,4 +30,6 @@ public interface AppDao {
 	public AppVersion getAppVersionById(AppVersion appVersion) throws Exception;
 	
 	public int startAppVersion(@Param("appid")int appid,@Param("versionId")int versionId)throws Exception;
+
+    public int removeAllAgent(int appId);
 }
