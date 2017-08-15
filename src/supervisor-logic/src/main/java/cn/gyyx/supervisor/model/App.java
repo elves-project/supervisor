@@ -19,6 +19,8 @@ public class App implements Serializable {
 	private String createTime; // 创建时间
 	private String updateTime; // 更新时间
 	private Integer versionId; // 当前版本id
+
+	private String bindUrl;		//绑定agent数据的url接口
 	
 	private String version; //app的当前版本
     private String status;
@@ -107,6 +109,14 @@ public class App implements Serializable {
 		this.agentCount = agentCount;
 	}
 
+	public String getBindUrl() {
+		return bindUrl;
+	}
+
+	public void setBindUrl(String bindUrl) {
+		this.bindUrl = bindUrl;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof App){
@@ -115,5 +125,6 @@ public class App implements Serializable {
 		}
 		return false;
 	}
-	
+
+
 }

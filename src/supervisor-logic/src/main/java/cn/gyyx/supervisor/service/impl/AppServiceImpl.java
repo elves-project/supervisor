@@ -1,16 +1,5 @@
 package cn.gyyx.supervisor.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import cn.gyyx.elves.util.ExceptionUtil;
 import cn.gyyx.elves.util.SecurityUtil;
 import cn.gyyx.elves.util.mq.MessageProducer;
@@ -20,8 +9,18 @@ import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.model.AppAgent;
 import cn.gyyx.supervisor.model.AppVersion;
 import cn.gyyx.supervisor.service.AppService;
-
+import cn.gyyx.supervisor.timer.UpdateBindDataTimer;
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class AppServiceImpl implements AppService{
@@ -36,6 +35,9 @@ public class AppServiceImpl implements AppService{
 	
 	@Autowired
 	private MessageProducer messageProducer;
+
+	@Autowired
+	private UpdateBindDataTimer timer;
 	
 	@Override
 	public List<App> getAllApp() {
@@ -100,6 +102,7 @@ public class AppServiceImpl implements AppService{
 	 * @Description: 通知heartbeat更新app信息
 	 * @return void    返回类型
 	 */
+	@Override
 	public void noticeHeartbeat(){
 		List<App> list=appDao.getAllApp();
 		
@@ -213,5 +216,22 @@ public class AppServiceImpl implements AppService{
 		noticeHeartbeat();
 		return true;
 	}
+
+    @Override
+    @Transactional(rollbackFor=Exception.class)
+    public boolean reBindAgent(int appId,List<String> ips) {
+        appDao.removeAllAgent(appId);
+        for(String ip:ips){
+            if(StringUtils.isNotBlank(ip)){
+                AppAgent app =new AppAgent();
+                app.setAppId(appId);
+                app.setIp(ip.trim());
+                app.setAssetId(ip.trim());
+                supervisorDao.addAppAgent(app);
+            }
+        }
+        noticeHeartbeat();
+        return true;
+    }
 
 }

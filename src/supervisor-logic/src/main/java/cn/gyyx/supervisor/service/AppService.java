@@ -1,11 +1,11 @@
 package cn.gyyx.supervisor.service;
 
-import java.util.List;
-import java.util.Map;
-
 import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.model.AppAgent;
 import cn.gyyx.supervisor.model.AppVersion;
+
+import java.util.List;
+import java.util.Map;
 
 public interface AppService {
 	
@@ -37,5 +37,9 @@ public interface AppService {
 	public boolean bindAgent(Integer appId, String appAgentList);
 	
 	public boolean unBindAgent(String ids);
-	
+
+    public boolean reBindAgent(int appId,List<String> ips);
+
+    public void noticeHeartbeat();
+
 }
