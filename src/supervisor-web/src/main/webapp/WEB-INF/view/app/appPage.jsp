@@ -25,7 +25,7 @@
 					<span class="glyphicon glyphicon-trash"></span>
 				</button>
 				<button class="btn btn-info" onclick="reBindData();">
-                    刷新绑定Agent数据
+                    手动刷新
 				</button>
 			</div>
 		</div>
@@ -921,16 +921,15 @@
     }
 
 	function reBindData(){
-        layer.confirm('确定要刷新绑定Agent数据？', {
+        layer.confirm('确定刷新APP绑定的Agent数据么？', {
             btn: ['确定','取消'] //按钮
         }, function(){
-            var index = layer.load(0, {shade: false});
-            layer.close(index);
-            return;
+            var index = layer.load(1, {shade: false});
             $.ajax({
                 url:"<%=basePath%>app/flushData",
                 type:'POST',
                 success:function(data){
+                    layer.close(index);
                     if(data=="success"){
                         layer.alert('操作成功！', {
                             icon : 6
@@ -944,6 +943,7 @@
                     }
                 },
                 error:function(){
+                    layer.close(index);
                     layer.alert('操作失败：请联系管理员！', {
                         icon : 6
                     });

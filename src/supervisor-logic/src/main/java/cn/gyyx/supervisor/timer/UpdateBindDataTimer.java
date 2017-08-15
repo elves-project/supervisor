@@ -4,12 +4,16 @@ import cn.gyyx.elves.util.ExceptionUtil;
 import cn.gyyx.elves.util.HttpUtil;
 import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.service.AppService;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * east.Fu
@@ -31,8 +35,18 @@ public class UpdateBindDataTimer {
             if(StringUtils.isNotBlank(app.getBindUrl())){
                 try {
                     String data = HttpUtil.sendGet(app.getBindUrl(),null);
+                    Map<String,String> rs = JSON.parseObject(data,new TypeReference<Map<String,String>>(){});
+                    List<Map<String,String>> dt =JSON.parseObject(rs.get("data"),new TypeReference<List<Map<String,String>>>(){});
+
+                    List<String> ips=new ArrayList<String>();
+                    for(Map m:dt){
+                        if(null!=m.get("ip")&&StringUtils.isNotBlank(m.get("ip").toString())){
+                            ips.add(m.get("ip").toString());
+                        }
+                    }
+                    LOG.info("get agent from url:"+JSON.toJSONString(ips));
                     if(StringUtils.isNotBlank(data)){
-                        appServiceImpl.reBindAgent(app.getAppId(),null);
+                        appServiceImpl.reBindAgent(app.getAppId(),ips);
                         if(!flag){
                             flag=true;
                         }
