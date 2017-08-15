@@ -28,6 +28,7 @@ CREATE TABLE `app` (
   `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '最后更新时间',
   `version_id` int(11) DEFAULT NULL COMMENT '当前版本id',
+  `bindUrl` varchar(255) DEFAULT NULL COMMENT '绑定agent数据的url接口',
   PRIMARY KEY (`app_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='应用信息表';
 
