@@ -1,13 +1,12 @@
 package cn.gyyx.elves.util.mq;
 
 import cn.gyyx.elves.util.JsonFilter;
-import cn.gyyx.elves.util.SpringUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import org.apache.log4j.Logger;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,6 +25,10 @@ public class MessageProducer {
 
     @Autowired
     private RabbitTemplate topicTemplate;
+
+    @Autowired
+    private CachingConnectionFactory connectionFactory;
+
 
     private Logger LOG = Logger.getLogger(MessageProducer.class);
 
@@ -69,14 +72,13 @@ public class MessageProducer {
         sendMsg.put("mqbody",bodyMsg==null?new HashMap<String,Object>():bodyMsg);
 
         String topicMessage = JSON.toJSONString(sendMsg, JsonFilter.filter);
-        Message message=new Message(topicMessage.getBytes("utf-8"),new MessageProperties());
-        long start=System.currentTimeMillis();
-        LOG.error("start :"+start+",outTimeMillis:"+outTimeMillis);
+        Message message=new Message(topicMessage.getBytes("UTF-8"),new MessageProperties());
 
         RabbitTemplate directTemplate =new RabbitTemplate();
-        directTemplate.setConnectionFactory((ConnectionFactory) SpringUtil.getBean("connectionFactory"));
-        directTemplate.setExchange("elves");
+        directTemplate.setConnectionFactory(connectionFactory);
+        directTemplate.setExchange(PropertyLoader.MQ_EXCHANGE);
         directTemplate.setReplyTimeout(outTimeMillis);
+
         Message reply=directTemplate.sendAndReceive(topicRoutingKey,message);
         if(reply==null){
             throw new Exception("waitting rabbitmq response timeout");
