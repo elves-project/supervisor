@@ -12,7 +12,7 @@ import java.util.Map;
  * 				<p>elves各模块提供服务供其他模块调用，模块间的消息请求和回复都要符合约定的规则。</p>
  * 					消息结构： {
  * 						"mykey":{fromModule}.{toModule}.{action},
- * 						"mqtype":"call.{directRoutingKey}"/"cast",
+ * 						"mqtype":"call"/"cast",
  * 						"mybody":{
  * 							"paramKey1":"paramValue1"
  * 						}
