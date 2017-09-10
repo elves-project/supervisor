@@ -1,15 +1,5 @@
 package cn.gyyx.supervisor.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import cn.gyyx.elves.util.ExceptionUtil;
 import cn.gyyx.elves.util.mq.MessageProducer;
 import cn.gyyx.supervisor.dao.AppDao;
@@ -19,6 +9,15 @@ import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.model.AppAgent;
 import cn.gyyx.supervisor.model.AuthKey;
 import cn.gyyx.supervisor.service.SupervisorService;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: SupervisorServiceImpl
@@ -182,6 +181,26 @@ public class SupervisorServiceImpl implements SupervisorService {
 		}
 		return rs;
 	}
+
+	@Override
+    public Map<String, Object> appAllInfo(Map<String, Object> params){
+        Map<String, Object> rs = new HashMap<String, Object>();
+        List<App> list=appDao.getAllApp();
+        List<Map<String, Object>> resultList = new ArrayList<Map<String, Object>>();
+        for (App app:list){
+            Map<String, Object> data = new HashMap<String, Object>();
+            data.put("app",app.getInstruct());
+            data.put("app_name",app.getAppName());
+            data.put("app_ver",app.getVersion());
+            data.put("last_update_time",app.getUpdateTime()==null?"":app.getUpdateTime().substring(0,app.getUpdateTime().length()-2));
+            resultList.add(data);
+        }
+        rs.put("flag","true");
+        rs.put("error","");
+        rs.put("result",resultList);
+        return  rs;
+    }
+
 
 	@Override
 	public Map<String, Object> agentList(Map<String, Object> params){

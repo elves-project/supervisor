@@ -47,7 +47,16 @@ public interface SupervisorService {
 	 * @return Map<String,Object>    返回类型
 	 */
 	public Map<String, Object> appInfo(Map<String, Object> params);
-	
+
+	/**
+	 * @Title: appInfo
+	 * @Description: 所有app信息
+	 * @param params
+	 * @throws Exception 设定文件
+	 * @return Map<String,Object>    返回类型
+	 */
+	public Map<String, Object> appAllInfo(Map<String, Object> params);
+
 	
 	/**
 	 * @Title: agentList
