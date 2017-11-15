@@ -1,5 +1,6 @@
 package cn.gyyx.controller.app;
 
+import cn.gyyx.elves.util.ExceptionUtil;
 import cn.gyyx.elves.util.mq.PropertyLoader;
 import cn.gyyx.supervisor.model.App;
 import cn.gyyx.supervisor.model.AppAgent;
@@ -12,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +34,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/app")
 public class AppController {
+
+    private static Logger LOG = LoggerFactory.getLogger(AppController.class);
 
 	@Autowired
 	private AppService appService;
@@ -153,6 +158,9 @@ public class AppController {
 		if (appFile != null) {
 			FTPClient ftpClient = new FTPClient();
 			try {
+                LOG.info("ftp address:"+address);
+                LOG.info("ftp userName:"+userName);
+                LOG.info("ftp pwd:"+password);
 				ftpClient.connect(address);
 				ftpClient.login(userName, password);
 				ftpClient.enterLocalPassiveMode();
@@ -187,12 +195,14 @@ public class AppController {
 				os.close();
 			} catch (Exception e) {
 				e.printStackTrace();
+                LOG.error(ExceptionUtil.getStackTraceAsString(e));
 				response.getWriter().println(JSON.toJSONString(flag, true));
 			} finally {
 				try {
 					ftpClient.disconnect();
 				} catch (IOException e) {
 					e.printStackTrace();
+                    LOG.error(ExceptionUtil.getStackTraceAsString(e));
 				}
 			}
 
