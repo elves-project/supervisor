@@ -35,7 +35,9 @@
 		
         <!-- 设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER，插入空值时不需要指定类型 -->
         <setting name="jdbcTypeForNull" value="NULL"/>
-		
+
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING" />
 	</settings>
 
 </configuration>

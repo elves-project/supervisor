@@ -227,10 +227,12 @@ public class AppServiceImpl implements AppService{
                 app.setAppId(appId);
                 app.setIp(ip.trim());
                 app.setAssetId(ip.trim());
-                supervisorDao.addAppAgent(app);
+                int i = supervisorDao.addAppAgent(app);
+                LOG.info("ip:"+ip+",flag :"+i);
+                LOG.info("json:"+JSON.toJSONString(app));
             }
         }
-        noticeHeartbeat();
+        //noticeHeartbeat();
         return true;
     }
 
