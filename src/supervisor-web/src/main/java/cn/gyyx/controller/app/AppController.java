@@ -165,6 +165,9 @@ public class AppController {
 				ftpClient.login(userName, password);
 				ftpClient.enterLocalPassiveMode();
 				ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+
+				ftpClient.setRemoteVerificationEnabled(false);
+
 				// 设置上传目录
 				// ftpClient.changeWorkingDirectory("/app");
 				String fileName = appFile.getOriginalFilename();

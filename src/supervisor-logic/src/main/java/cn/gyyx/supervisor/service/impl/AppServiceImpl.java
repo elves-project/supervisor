@@ -1,7 +1,6 @@
 package cn.gyyx.supervisor.service.impl;
 
 import cn.gyyx.elves.util.ExceptionUtil;
-import cn.gyyx.elves.util.SecurityUtil;
 import cn.gyyx.elves.util.mq.MessageProducer;
 import cn.gyyx.supervisor.dao.AppDao;
 import cn.gyyx.supervisor.dao.SupervisorDao;
@@ -127,7 +126,7 @@ public class AppServiceImpl implements AppService{
 		result.put("result",data);
 		
 		Map<String,Object> msg=new HashMap<String,Object>();
-		msg.put("mqkey","supervisor.heartbeat.updateAppInfo."+SecurityUtil.getUniqueKey());
+		msg.put("mqkey","supervisor.heartbeat.updateAppInfo");
 		msg.put("mqtype","cast");
 		msg.put("mqbody",result);
 		
